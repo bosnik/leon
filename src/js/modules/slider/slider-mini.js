@@ -27,7 +27,7 @@ export default class MiniSlider extends Slider {
             
             this.container.appendChild(this.slides[0]);
             this.slides = [...this.container.children];    
-            // this.resetActicveBtn();      
+            this.resetActicveBtn();      
             this.decorizeSlides();
         });
         this.prev.addEventListener('click', () => {
@@ -35,43 +35,43 @@ export default class MiniSlider extends Slider {
             let active = this.slides[this.slides.length - 1];
             this.container.insertBefore(active, this.slides[0]);
             this.slides = [...this.container.children];
-            // this.resetActicveBtn();
+            this.resetActicveBtn();
             this.decorizeSlides();
         });
 
         
     }
 
-    // resetActicveBtn() {
-    //     const container = document.querySelector('.feed__slider');
+    resetActicveBtn() {
+        const container = document.querySelector('.feed__slider');
 
-    //     // Sprawdź, czy kontener istnieje
-    //     if (container) {
-    //         // Jeśli znaleziono przyciski, wykonaj operacje
-    //         if (this.next && this.prev) {
-    //             // Przesuń przyciski next i prev na środek kontenera feed__slider
-    //             const middleIndex = Math.floor(this.slides.length / 2);
-    //             container.insertBefore(this.next, this.slides[middleIndex]);
-    //             container.insertBefore(this.prev, this.slides[middleIndex]);
-    //             // Zaktualizuj listę slajdów
-    //             this.slides = [...container.children];
-    //         } else {
-    //             console.error("Nie znaleziono przycisków 'next' i 'prev' w kontenerze 'feed__slider'");
-    //         }
-    //     } else {
-    //         console.error("Nie znaleziono kontenera 'feed__slider'");
-    //     }
+        // Sprawdź, czy kontener istnieje
+        if (container) {
+            // Jeśli znaleziono przyciski, wykonaj operacje
+            if (this.next && this.prev) {
+                // Przesuń przyciski next i prev na środek kontenera feed__slider
+                const middleIndex = Math.floor(this.slides.length / 2);
+                container.insertBefore(this.next, this.slides[middleIndex]);
+                container.insertBefore(this.prev, this.slides[middleIndex]);
+                // Zaktualizuj listę slajdów
+                this.slides = [...container.children];
+            } else {
+                console.error("Nie znaleziono przycisków 'next' i 'prev' w kontenerze 'feed__slider'");
+            }
+        } else {
+            console.error("Nie znaleziono kontenera 'feed__slider'");
+        }
        
-    // }
+    }
 
-    // nextSLide() {
-    //     this.next.addEventListener('click', () => {
-    //         this.resetActicveBtn();
-    //         this.container.appendChild(this.slides[0]);
-    //         this.slides = [...this.container.children];          
-    //         this.decorizeSlides();
-    //     });
-    // }
+    nextSLide() {
+        this.next.addEventListener('click', () => {
+            this.resetActicveBtn();
+            this.container.appendChild(this.slides[0]);
+            this.slides = [...this.container.children];          
+            this.decorizeSlides();
+        });
+    }
 
 
     init() {
