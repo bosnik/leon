@@ -148,7 +148,7 @@ class MiniSlider extends _slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
     }
   }
   bindTriggers() {
-    this.nextSLide();
+    this.next.addEventListener('click', () => this.nextSLide());
     this.prev.addEventListener('click', () => {
       let active = this.slides[this.slides.length - 1];
       this.container.insertBefore(active, this.slides[0]);
@@ -182,12 +182,42 @@ class MiniSlider extends _slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
     }
   }
   nextSLide() {
-    this.next.addEventListener('click', () => {
-      this.container.appendChild(this.slides[0]);
-      this.slides = [...this.container.children];
-      this.resetActicveBtn();
-      this.decorizeSlides();
-    });
+    this.container.appendChild(this.slides[0]);
+    this.slides = [...this.container.children];
+    this.resetActicveBtn();
+    this.decorizeSlides();
+  }
+  stopSlider() {
+    let intervalId; // Zmienna do przechowywania identyfikatora interwału
+
+    // Funkcja do uruchamiania intervalu
+    const startInterval = () => {
+      intervalId = setInterval(() => {
+        this.nextSLide();
+      }, 5000);
+    };
+
+    // Funkcja do zatrzymywania intervalu
+    const stopInterval = () => {
+      clearInterval(intervalId);
+    };
+    // Sprawdź, czy autoPlay jest włączone
+    if (this.autoPlay) {
+      // Uruchom interval
+      startInterval();
+
+      // Dodaj obsługę zdarzenia 'mouseover'
+      this.container.addEventListener('mouseover', () => {
+        // Zatrzymaj interval po najechaniu myszą na slider
+        stopInterval();
+      });
+
+      // Dodaj obsługę zdarzenia 'mouseout'
+      this.container.addEventListener('mouseout', () => {
+        // Uruchom ponownie interval po opuszczeniu myszy z slidera
+        startInterval();
+      });
+    }
   }
   init() {
     this.container.style.cssText = `
@@ -198,6 +228,7 @@ class MiniSlider extends _slider__WEBPACK_IMPORTED_MODULE_0__["default"] {
         `;
     this.bindTriggers();
     this.decorizeSlides();
+    this.stopSlider();
   }
 }
 
@@ -327,7 +358,8 @@ window.addEventListener('DOMContentLoaded', () => {
     prev: '.modules__info-btns .slick-prev',
     next: '.modules__info-btns .slick-next',
     activeClass: 'card-active',
-    animate: true
+    animate: true,
+    autoPlay: true
   });
   modulesSlider.init();
   const feedSlider = new _modules_slider_slider_mini__WEBPACK_IMPORTED_MODULE_1__["default"]({

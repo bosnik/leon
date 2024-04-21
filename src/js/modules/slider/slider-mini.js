@@ -23,7 +23,7 @@ export default class MiniSlider extends Slider {
     }
 
     bindTriggers() {
-        this.nextSLide();
+        this.next.addEventListener('click', () => this.nextSLide());
         this.prev.addEventListener('click', () => {
             let active = this.slides[this.slides.length - 1];
             this.container.insertBefore(active, this.slides[0]);
@@ -62,12 +62,44 @@ export default class MiniSlider extends Slider {
     
 
     nextSLide() {
-        this.next.addEventListener('click', () => {
             this.container.appendChild(this.slides[0]);
             this.slides = [...this.container.children];    
             this.resetActicveBtn();      
             this.decorizeSlides();
-        });
+        
+    }
+
+    stopSlider() {
+        let intervalId; // Zmienna do przechowywania identyfikatora interwału
+
+        // Funkcja do uruchamiania intervalu
+        const startInterval = () => {
+            intervalId = setInterval(() => {
+                this.nextSLide();
+            }, 5000);
+        };
+        
+        // Funkcja do zatrzymywania intervalu
+        const stopInterval = () => {
+            clearInterval(intervalId);
+        };
+        // Sprawdź, czy autoPlay jest włączone
+if (this.autoPlay) {
+    // Uruchom interval
+    startInterval();
+
+    // Dodaj obsługę zdarzenia 'mouseover'
+    this.container.addEventListener('mouseover', () => {
+        // Zatrzymaj interval po najechaniu myszą na slider
+        stopInterval();
+    });
+
+    // Dodaj obsługę zdarzenia 'mouseout'
+    this.container.addEventListener('mouseout', () => {
+        // Uruchom ponownie interval po opuszczeniu myszy z slidera
+        startInterval();
+    });
+}
     }
 
 
@@ -79,9 +111,10 @@ export default class MiniSlider extends Slider {
         overflow: hidden;
         align-items: flex-start;  
         `;
-
+        
         this.bindTriggers();
         this.decorizeSlides();
+        this.stopSlider();
 
         
        
