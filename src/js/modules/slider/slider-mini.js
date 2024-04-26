@@ -105,6 +105,7 @@ if (this.autoPlay) {
 
     init() {
         
+       try {
         this.container.style.cssText = `
         display: flex;
         flex-wrap: wrap;
@@ -115,6 +116,7 @@ if (this.autoPlay) {
         this.bindTriggers();
         this.decorizeSlides();
         this.stopSlider();
+       }catch(e){}
 
         
        
